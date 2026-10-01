@@ -37,3 +37,7 @@ The ESP32 first intializes the screen and WI-FI interface, then it connects and 
 [To be added]
 
 ---
+
+### Current Progress
+As of right now, all I did was develop a simple dot-style font render, and used it on a SSD1306 (monochrome dual-color OLED). And it actually works, it took a bit had a few issue with memory allocation and libary wasn't working but as you can see in the image below, it works.
+![Picture of font render](resources/images/Font_render_oled.png)
