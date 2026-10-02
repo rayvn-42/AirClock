@@ -27,19 +27,4 @@ The ESP32 first intializes the screen and WI-FI interface, then it connects and 
 | Battery          | The internal battery that can be used if the device is unplugged       |
 | USB-C Port       | The port through which the battery can be charged and power the device |
 | PCB Board        | This connects all the components to each other                         |
-> Note: Bill of materials not yet added, replace by table above
-
-### A 3D Model
-[To be added]
-
-### Schematic and board layout
-[To be added]
-
-### Final Product
-[To be added]
-
----
-
-### Current Progress
-As of right now, all I did was develop a simple dot-style font render, and used it on a SSD1306 (monochrome dual-color OLED). And it actually works, it took a bit had a few issue with memory allocation and libary wasn't working but as you can see in the image below, it works.
-![Picture of font render](resources/images/Font_render_oled.png)
+> Note: I am using an OLED since that's what I got available.
