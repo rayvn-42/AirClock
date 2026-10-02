@@ -14,7 +14,7 @@
 | --- | --- | --- | --- | --- | --- |
 | [2.4" 240x320 TFT display](https://www.micro-planet.ma/produit/afficheur-lcd-2-4/) | The main interface through which the user sees the clock and weather | 1 | $13.00 | $13.00 | [Micro-Planet](https://www.micro-planet.ma/produit/afficheur-lcd-2-4/) |
 | **Parts subtotal** | — | — | — | **$13.00** | — |
-| **Tax & shipping** | — | — | — | **$13.00** | — |
-| **Total** | — | — | — | **$26.00** | — |
+| **Tax & shipping** | — | — | — | **$3.60** | — |
+| **Total** | — | — | — | **$16.60** | — |
 
-$4.00 left of the tier's funding.
+$13.40 left of the tier's funding.
