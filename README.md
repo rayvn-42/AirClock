@@ -1,6 +1,8 @@
 ## AirClock
 > A simple dot-style clock that displays weather data. Based on an ESP32.
 
+![Logo](resources/images/w%20text.png)
+
 ---
 
 ### What is AirClock?
