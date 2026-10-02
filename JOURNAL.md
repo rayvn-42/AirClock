@@ -71,7 +71,7 @@ And then finallyyy once that was done I pushed everything to github.
 ---
 So I first started by just reading an [article](https://medium.com/@ceavinrufus/using-ssd1306-oled-display-on-esp32-bonus-project-b9157dc0d06d) on using an oled display with an ESP32, and it turned out that its basically same code as an Arduino UNO.
 
-![Screenshot_20261002_135842](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/XoBihhfZo6FAvvRPA5lxGMbSZAmBagkB/044f0a8be1a03b8bb72644fe1fe7bd4a0a1acfdeda7162372dd3322c4f1d4b60.png)
+![Screenshot_20261002_135842_cropped](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/XoBihhfZo6FAvvRPA5lxGMbSZAmBagkB/b58b5be3c6161721654aaf603428585633861a004fd6b4ca17a15628bde8151c.png)
 
 So I just uploaded that same code to the ESP32. And it ran fine and rendered the text just like the Arduino UNO.
 
@@ -79,7 +79,7 @@ So I just uploaded that same code to the ESP32. And it ran fine and rendered the
 
 Once that worked fine, I wanted to add a weather api, so I searched for a free  one that didn't need a key and found [open-meteo](https://open-meteo.com) and it looks like it has a lot of data. And like its a perfect fit, so I just decided to go with it. I read some of the Documentation and it seemed quite easy to use too.
 
-![Screenshot_20261002_141041](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/XoBihhfZo6FAvvRPA5lxGMbSZAmBagkB/6affff2b01a6c681864bdd02b6e8a3b209576618e587c23b2483c87feba5e30e.png)
+![Screenshot_20261002_141041_cropped](https://halflife.hackclub-assets.com/hackclub-half-life/sessions/XoBihhfZo6FAvvRPA5lxGMbSZAmBagkB/89d1f5c26b9a7f750dfdf970ce36ccbf09cde5786d4226d7b0bb6aff0650dce9.png)
 
 But then I realized that I need to be connected to a WiFi router, but hardcoding it is bad practice and not really accessible for the user. So I decided to use a WifiManager, it basically starts the ESP32 in AP mode and hosts it own webpage where the user can enter his info. Once that's done it switches back to client mode and connects to that AP. Once that was complete I also implemented a few more functions such as `showOledMessage` and `GetWeather` just as wrappers or helper functions.
 
