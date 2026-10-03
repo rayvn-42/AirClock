@@ -1,18 +1,32 @@
+// This is for the custom dot-style font
+
 #pragma once
 
 #include <Arduino.h>
 #include <Adafruit_GFX.h>
 
-#define GLYPH_DEGREE       128
-#define GLYPH_CELSIUS      129
-#define GLYPH_FAHRENHEIT   130
-#define GLYPH_COLON        131
-#define ICON_SUN           132
-#define ICON_CLOUD         133
-#define ICON_PARTLY_CLOUDY 134
-#define ICON_RAIN          135
-#define ICON_STORM         136
-#define ICON_SNOW          137
+#define GLYPH_DEGREE '*'
 
-void render_dot_char(Adafruit_GFX *gfx, char ch, int x, int y, int dot_r, int pitch, uint16_t color = 0xFFFF);
-void render_dot_string(Adafruit_GFX *gfx, const char *text, int x, int y, int dot_r, int pitch, int char_spacing, uint16_t color = 0xFFFF);
+enum WeatherIcon : uint8_t {
+  ICON_SUN,
+  ICON_MOON,
+  ICON_PARTLY,
+  ICON_CLOUD,
+  ICON_FOG,
+  ICON_RAIN,
+  ICON_STORM,
+  ICON_SNOW,
+  ICON_COUNT
+};
+
+int dot_radius(int pitch);
+int dot_text_width(const char *text, int pitch);
+int dot_text_height(int pitch);
+int dot_icon_size(int pitch);
+
+void dot_text(Adafruit_GFX *gfx, const char *text, int x, int y, int pitch, uint16_t color);
+void dot_icon(Adafruit_GFX *gfx, WeatherIcon icon, int x, int y, int pitch, uint16_t color_a, uint16_t color_b);
+
+int dot_logo_width(int pitch);
+int dot_logo_height(int pitch);
+void dot_logo(Adafruit_GFX *gfx, int x, int y, int pitch, uint16_t color_cloud, uint16_t color_clock);

@@ -1,22 +1,24 @@
+// include header
 #include "font_renderer.h"
 
-static const uint8_t PROGMEM ascii_font[59][5] = {
+// font lookup table
+static const uint8_t PROGMEM FONT[59][5] = {
   {0x00,0x00,0x00,0x00,0x00},
   {0x00,0x00,0x5F,0x00,0x00},
-  {0,0,0,0,0},
-  {0,0,0,0,0},
-  {0,0,0,0,0},
-  {0,0,0,0,0},
-  {0,0,0,0,0},
-  {0,0,0,0,0},
-  {0,0,0,0,0},
-  {0,0,0,0,0},
-  {0,0,0,0,0},
+  {0x00,0x00,0x00,0x00,0x00},
+  {0x00,0x00,0x00,0x00,0x00},
+  {0x00,0x00,0x00,0x00,0x00},
+  {0x00,0x00,0x00,0x00,0x00},
+  {0x00,0x00,0x00,0x00,0x00},
+  {0x00,0x00,0x00,0x00,0x00},
+  {0x00,0x00,0x00,0x00,0x00},
+  {0x00,0x00,0x00,0x00,0x00},
+  {0x00,0x06,0x09,0x06,0x00},
   {0x08,0x08,0x3E,0x08,0x08},
-  {0x00,0xA0,0x60,0x00,0x00},
+  {0x00,0x40,0x60,0x00,0x00},
   {0x08,0x08,0x08,0x08,0x08},
   {0x00,0x60,0x60,0x00,0x00},
-  {0,0,0,0,0},
+  {0x40,0x30,0x08,0x06,0x01},
   {0x3E,0x51,0x49,0x45,0x3E},
   {0x00,0x42,0x7F,0x40,0x00},
   {0x42,0x61,0x51,0x49,0x46},
@@ -27,13 +29,13 @@ static const uint8_t PROGMEM ascii_font[59][5] = {
   {0x01,0x71,0x09,0x05,0x03},
   {0x36,0x49,0x49,0x49,0x36},
   {0x06,0x49,0x49,0x29,0x1E},
-  {0,0,0,0,0},
-  {0,0,0,0,0},
-  {0,0,0,0,0},
-  {0,0,0,0,0},
-  {0,0,0,0,0},
+  {0x00,0x36,0x36,0x00,0x00},
+  {0x00,0x00,0x00,0x00,0x00},
+  {0x00,0x00,0x00,0x00,0x00},
+  {0x00,0x00,0x00,0x00,0x00},
+  {0x00,0x00,0x00,0x00,0x00},
   {0x02,0x01,0x51,0x09,0x06},
-  {0,0,0,0,0},
+  {0x00,0x00,0x00,0x00,0x00},
   {0x7E,0x11,0x11,0x11,0x7E},
   {0x7F,0x49,0x49,0x49,0x36},
   {0x3E,0x41,0x41,0x41,0x22},
@@ -62,45 +64,146 @@ static const uint8_t PROGMEM ascii_font[59][5] = {
   {0x61,0x51,0x49,0x45,0x43},
 };
 
-static const uint8_t PROGMEM special_font[10][5] = {
-  {0x00,0x06,0x09,0x06,0x00},
-  {0x3E,0x41,0x41,0x41,0x22},
-  {0x7F,0x09,0x09,0x09,0x01},
-  {0x00,0x36,0x36,0x00,0x00},
-  {0x1C,0x3E,0x7F,0x3E,0x1C},
-  {0x30,0x4E,0x7F,0x79,0x30},
-  {0x38,0x4C,0x7E,0x7A,0x5C},
-  {0x70,0x4E,0x7F,0x79,0x70},
-  {0x14,0x6E,0x3B,0x76,0x28},
-  {0x2A,0x1C,0x7F,0x1C,0x2A},
+
+static const uint16_t PROGMEM ICON_A[ICON_COUNT][9] = {
+  {0x010,0x082,0x038,0x07C,0x17D,0x07C,0x038,0x082,0x010},
+  {0x030,0x060,0x0E0,0x1E0,0x1E0,0x1E0,0x0F0,0x07C,0x038},
+  {0x000,0x000,0x000,0x003,0x007,0x00F,0x01F,0x01F,0x00E},
+  {0x000,0x038,0x07C,0x0FE,0x1FF,0x1FF,0x1FF,0x0FE,0x000},
+  {0x000,0x0FE,0x000,0x1FC,0x000,0x0FE,0x000,0x1FC,0x000},
+  {0x038,0x07C,0x0FE,0x1FF,0x1FF,0x0FE,0x000,0x000,0x000},
+  {0x038,0x07C,0x0FE,0x1FF,0x1FF,0x0FE,0x000,0x000,0x000},
+  {0x010,0x092,0x054,0x038,0x1FF,0x038,0x054,0x092,0x010},
 };
 
-static const uint8_t *find_glyph(uint8_t c) {
-  if (c >= 'a' && c <= 'z') c -= 32;
-  if (c == ':')             return special_font[3];
-  if (c >= 32 && c <= 90)   return ascii_font[c - 32];
-  if (c >= 128 && c <= 137) return special_font[c - 128];
-  return nullptr;
+static const uint16_t PROGMEM ICON_B[ICON_COUNT][9] = {
+  {0x000,0x000,0x000,0x000,0x000,0x000,0x000,0x000,0x000},
+  {0x000,0x000,0x000,0x000,0x000,0x000,0x000,0x000,0x000},
+  {0x020,0x088,0x070,0x170,0x070,0x000,0x000,0x000,0x000},
+  {0x000,0x000,0x000,0x000,0x000,0x000,0x000,0x000,0x000},
+  {0x000,0x000,0x000,0x000,0x000,0x000,0x000,0x000,0x000},
+  {0x000,0x000,0x000,0x000,0x000,0x000,0x044,0x054,0x010},
+  {0x000,0x000,0x000,0x000,0x000,0x00C,0x018,0x03C,0x008},
+  {0x000,0x000,0x000,0x000,0x000,0x000,0x000,0x000,0x000},
+};
+
+static const int LOGO_COLS = 17;
+static const int LOGO_ROWS = 13;
+
+static const uint32_t PROGMEM LOGO_A[LOGO_ROWS] = {0x00300,0x00FC0,0x01FE0,0x01FE0,0x07FF0,0x0FFC0,0x1FF80,0x1FF00,0x1FF00,0x1FF00,0x0FF00,0x00000,0x00000};
+
+static const uint32_t PROGMEM LOGO_B[LOGO_ROWS] = {0x00000,0x00000,0x00000,0x00000,0x00000,0x00000,0x0001C,0x00036,0x00077,0x00077,0x0007B,0x0003E,0x0001C};
+
+int dot_radius(int pitch) {
+  if (pitch <= 2) return 0;
+  int r = (pitch * 35) / 100;
+  return r < 1 ? 1 : r;
 }
 
-void render_dot_char(Adafruit_GFX *gfx, char ch, int x, int y, int dot_r, int pitch, uint16_t color) {
-  const uint8_t *g = find_glyph((uint8_t)ch);
-  if (!g) return;
+struct GlyphInfo {
+  const uint8_t *cols;
+  uint8_t first;
+  uint8_t count;
+};
 
-  for (int col = 0; col < 5; col++) {
-    uint8_t bits = pgm_read_byte(&g[col]);
-    for (int row = 0; row < 7; row++) {
-      if (bits & (1 << row)) {
-        gfx->fillCircle(x + col * pitch + dot_r, y + row * pitch + dot_r, dot_r, color);
+static bool glyph_info(uint8_t c, GlyphInfo *gi) {
+  if (c >= 0x80) return false;
+  if (c >= 'a' && c <= 'z') c -= 32;
+  if (c < 32 || c > 90) return false;
+
+  const uint8_t *g = FONT[c - 32];
+  gi->cols = g;
+  gi->first = 0;
+  gi->count = 5;
+
+  if (c == ' ') {
+    gi->cols = nullptr;
+    gi->count = 3;
+    return true;
+  }
+  if (c == ':' || c == '.' || c == ',' || c == '!' || c == '*' || c == '\'') {
+    int first = -1, last = -1;
+    for (int i = 0; i < 5; i++) {
+      if (pgm_read_byte(&g[i])) {
+        if (first < 0) first = i;
+        last = i;
       }
+    }
+    if (first >= 0) {
+      gi->first = (uint8_t)first;
+      gi->count = (uint8_t)(last - first + 1);
+    }
+  }
+  return true;
+}
+
+int dot_text_width(const char *text, int pitch) {
+  int cols = 0, n = 0;
+  for (const uint8_t *p = (const uint8_t *)text; *p; p++) {
+    GlyphInfo gi;
+    if (!glyph_info(*p, &gi)) continue;
+    cols += gi.count;
+    n++;
+  }
+  if (n == 0) return 0;
+  return (cols + n - 2) * pitch + 2 * dot_radius(pitch) + 1;
+}
+
+int dot_text_height(int pitch) { return 6 * pitch + 2 * dot_radius(pitch) + 1; }
+int dot_icon_size(int pitch)   { return 8 * pitch + 2 * dot_radius(pitch) + 1; }
+
+void dot_text(Adafruit_GFX *gfx, const char *text, int x, int y, int pitch, uint16_t color) {
+  const int r = dot_radius(pitch);
+  int cx = x;
+
+  for (const uint8_t *p = (const uint8_t *)text; *p; p++) {
+    GlyphInfo gi;
+    if (!glyph_info(*p, &gi)) continue;
+
+    if (gi.cols) {
+      for (int col = 0; col < gi.count; col++) {
+        uint8_t bits = pgm_read_byte(&gi.cols[gi.first + col]);
+        for (int row = 0; row < 7; row++) {
+          if (bits & (1 << row)) {
+            gfx->fillCircle(cx + col * pitch + r, y + row * pitch + r, r, color);
+          }
+        }
+      }
+    }
+    cx += (gi.count + 1) * pitch;
+  }
+}
+
+void dot_icon(Adafruit_GFX *gfx, WeatherIcon icon, int x, int y, int pitch, uint16_t color_a, uint16_t color_b) {
+  if (icon >= ICON_COUNT) return;
+  const int r = dot_radius(pitch);
+
+  for (int row = 0; row < 9; row++) {
+    uint16_t a = pgm_read_word(&ICON_A[icon][row]);
+    uint16_t b = pgm_read_word(&ICON_B[icon][row]);
+    if (!(a | b)) continue;
+    for (int col = 0; col < 9; col++) {
+      const uint16_t m = 1 << (8 - col);
+      if (a & m)      gfx->fillCircle(x + col * pitch + r, y + row * pitch + r, r, color_a);
+      else if (b & m) gfx->fillCircle(x + col * pitch + r, y + row * pitch + r, r, color_b);
     }
   }
 }
 
-void render_dot_string(Adafruit_GFX *gfx, const char *text, int x, int y, int dot_r, int pitch, int char_spacing, uint16_t color) {
-  int cx = x;
-  for (; *text; text++) {
-    render_dot_char(gfx, *text, cx, y, dot_r, pitch, color);
-    cx += 5 * pitch + char_spacing;
+int dot_logo_width(int pitch)  { return (LOGO_COLS - 1) * pitch + 2 * dot_radius(pitch) + 1; }
+int dot_logo_height(int pitch) { return (LOGO_ROWS - 1) * pitch + 2 * dot_radius(pitch) + 1; }
+
+void dot_logo(Adafruit_GFX *gfx, int x, int y, int pitch, uint16_t color_cloud, uint16_t color_clock) {
+  const int r = dot_radius(pitch);
+
+  for (int row = 0; row < LOGO_ROWS; row++) {
+    const uint32_t a = pgm_read_dword(&LOGO_A[row]);
+    const uint32_t b = pgm_read_dword(&LOGO_B[row]);
+    if (!(a | b)) continue;
+    for (int col = 0; col < LOGO_COLS; col++) {
+      const uint32_t m = 1UL << (LOGO_COLS - 1 - col);
+      if (a & m)      gfx->fillCircle(x + col * pitch + r, y + row * pitch + r, r, color_cloud);
+      else if (b & m) gfx->fillCircle(x + col * pitch + r, y + row * pitch + r, r, color_clock);
+    }
   }
 }
